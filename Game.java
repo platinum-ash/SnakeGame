@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.MouseInputListener;
+
 import java.util.Random;
 
 
@@ -13,7 +15,7 @@ public class Game extends JPanel implements ActionListener{
     private final static int ITEM_SIZE = 20;
     private final static int SCREEN_HEIGHT = 600;
     private final static int SCREEN_WIDTH = 600;
-    private static boolean gameOver = false;
+    private static boolean gameOver = true;
     Random random = new Random();
     private int apple[] = new int[2];
     
@@ -21,8 +23,23 @@ public class Game extends JPanel implements ActionListener{
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		this.setFocusable(true);
 		this.addKeyListener(new MyKeyAdapter());
-        init();//initialize the game
+        this.setVisible(true);
+
+        //Add button to start game
+        JButton myButton = new JButton("Start Game");
+        myButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Button clicked");
+                gameOver = false;//Temporary implementation to prevent drawing until game is started
+                myButton.setVisible(false);
+                init();
+            }
+        });
+        //myButton.setBounds(100, 100, 50, 100); does not work . .
+        this.add(myButton);
     }
+
     public void init(){
 
         //Set inital random start values for the food
@@ -43,12 +60,16 @@ public class Game extends JPanel implements ActionListener{
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        drawBoard(g);
+        //bad implementation
+        if(!gameOver){
+            drawBoard(g);
+        }
+        
     }
     
     //Do all the drawing here
     public void drawBoard(Graphics g){
-        setBackground(Color.gray);
+        setBackground(Color.black);
         //Draw all the snake squares at their respective positions
         for(int i = 0; i < snakeSize; i++){
             g.setColor(Color.green);

@@ -8,7 +8,6 @@ public class Window extends JFrame{
        this.setLocationRelativeTo(null);
        this.setSize(600, 600);
        this.setVisible(true);
-
    }
 
 }
